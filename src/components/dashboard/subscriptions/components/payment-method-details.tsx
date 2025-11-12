@@ -13,6 +13,10 @@ const PaymentMethodLabels: Record<PaddlePaymentMethodDetails['type'], string> = 
   korea_local: 'Korean Local Payment',
   offline: 'Offline',
   unknown: 'Unknown',
+  blik: 'BLIK',
+  mb_way: 'MB Way',
+  pix: 'Pix',
+  upi: 'UPI',
 };
 
 interface Props {
