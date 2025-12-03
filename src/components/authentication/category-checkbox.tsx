@@ -11,13 +11,12 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-export default function IndustryDropdown() {
-  const [selected, setSelected] = React.useState<string[]>([]);
+interface IndustryDropdownProps {
+  selected: string[];
+  onToggle: (val: string) => void;
+}
 
-  const toggleSelection = (value: string) => {
-    setSelected((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]));
-  };
-
+export default function IndustryDropdown({ selected, onToggle }: IndustryDropdownProps) {
   const industries = [
     'Skilled Trades & Construction',
     'Business & Finance',
@@ -35,11 +34,12 @@ export default function IndustryDropdown() {
       <DropdownMenuContent className="w-80">
         <DropdownMenuLabel>Industries</DropdownMenuLabel>
         <DropdownMenuSeparator />
+
         {industries.map((industry) => (
           <DropdownMenuCheckboxItem
             key={industry}
             checked={selected.includes(industry)}
-            onCheckedChange={() => toggleSelection(industry)}
+            onCheckedChange={() => onToggle(industry)}
           >
             {industry}
           </DropdownMenuCheckboxItem>

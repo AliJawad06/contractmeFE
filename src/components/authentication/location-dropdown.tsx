@@ -12,27 +12,28 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { X } from 'lucide-react';
 
-export default function LocationDropdown() {
-  const [items, setItems] = React.useState<string[]>(['Remote']);
-  const [selected, setSelected] = React.useState<string[]>([]);
-  const [inputValue, setInputValue] = React.useState('');
+interface LocationDropdownProps {
+  items: string[];
+  selected: string[];
+  inputValue: string;
+  onInputChange: (val: string) => void;
+  onAdd: (val: string) => void;
+  onRemove: (val: string) => void;
+  onToggle: (val: string) => void;
+}
 
-  const toggleSelection = (value: string) => {
-    setSelected((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]));
-  };
-
-  const addItem = (e: React.FormEvent) => {
+export default function LocationDropdown({
+  items,
+  selected,
+  inputValue,
+  onInputChange,
+  onAdd,
+  onRemove,
+  onToggle,
+}: LocationDropdownProps) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = inputValue.trim();
-    if (trimmed && !items.includes(trimmed)) {
-      setItems([...items, trimmed]);
-      setInputValue('');
-    }
-  };
-
-  const removeItem = (item: string) => {
-    setItems(items.filter((i) => i !== item));
-    setSelected(selected.filter((s) => s !== item));
+    onAdd(inputValue);
   };
 
   return (
@@ -47,12 +48,12 @@ export default function LocationDropdown() {
         <DropdownMenuLabel>Desired Locations</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        {/* Input for adding new items */}
-        <form onSubmit={addItem} className="flex items-center gap-2 px-2 py-1">
+        {/* ✅ Input for adding new items */}
+        <form onSubmit={handleSubmit} className="flex items-center gap-2 px-2 py-1">
           <input
             type="text"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => onInputChange(e.target.value)}
             placeholder="Type and press Enter"
             className="w-full rounded-md border px-2 py-1 text-sm outline-none focus:ring-2 focus:ring-ring"
           />
@@ -63,19 +64,19 @@ export default function LocationDropdown() {
 
         <DropdownMenuSeparator />
 
-        {/* Display items with checkboxes + remove option */}
+        {/* ✅ Display items with checkboxes + remove option */}
         <div className="max-h-60 overflow-auto">
           {items.map((item) => (
             <div key={item} className="flex items-center">
               <DropdownMenuCheckboxItem
                 checked={selected.includes(item)}
-                onCheckedChange={() => toggleSelection(item)}
+                onCheckedChange={() => onToggle(item)}
                 className="flex-1"
               >
                 {item}
               </DropdownMenuCheckboxItem>
               <button
-                onClick={() => removeItem(item)}
+                onClick={() => onRemove(item)}
                 className="mr-2 text-muted-foreground hover:text-destructive"
                 type="button"
               >

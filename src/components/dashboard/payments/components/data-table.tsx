@@ -1,108 +1,142 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { AgGridReact } from 'ag-grid-react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  ModuleRegistry,
+  AllCommunityModule,
+  Theme,
+  createGrid,
+  themeAlpine,
+  themeBalham,
+  themeMaterial,
+  themeQuartz,
+  colorSchemeDark,
+  colorSchemeDarkBlue,
+  colorSchemeDarkWarm,
+  colorSchemeLightCold,
+  colorSchemeLightWarm,
+  BodyScrollEvent,
+} from 'ag-grid-community';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Transaction } from '@paddle/paddle-node-sdk';
+export default function DataTable() {
+  const [rowData, setRowData] = useState<any[]>([]);
+  const [columnDefs, setColumnDefs] = useState<any[]>([]);
+  const [blur, isBlur] = useState<boolean>(false);
+  const gridRef = useRef<any>(null);
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  hasMore?: boolean;
-  totalRecords?: number;
-  goToNextPage: (cursor: string) => void;
-  goToPrevPage: () => void;
-  hasPrev: boolean;
-}
+  ModuleRegistry.registerModules([AllCommunityModule]);
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  totalRecords,
-  hasMore,
-  goToNextPage,
-  goToPrevPage,
-  hasPrev,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    pageCount: totalRecords ? Math.ceil(totalRecords / data.length) : 1,
-    rowCount: data.length,
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+  // 👇 How many rows to show before blur
+  const VISIBLE_ROWS = 45;
+  // TODO: use useRef()
+  let gridApi: any;
+
+  const onGridReady = (params: any) => {
+    gridApi = params.api;
+  };
+  // AG-Grid default row height = 25px
+  const headerHeight = 40; // default ~38-40
+  const rowHeight = 25;
+  const visibleHeight = headerHeight + VISIBLE_ROWS * rowHeight;
+
+  useEffect(() => {
+    // Example: fetch from a local JSON file or API
+    fetch('../../super_combined.json')
+      .then((res) => res.json())
+      .then((data) => {
+        const cleaned = data.map(({ posted, start, ...rest }: any) => rest);
+        setRowData(cleaned);
+
+        const LinkRenderer = ({ value, data }: any) => {
+          // value = title text
+          // data.url = the URL field
+          if (!value || !data?.url) return value;
+
+          return (
+            <a href={data.url} target="_blank" rel="noopener noreferrer">
+              {value}
+            </a>
+          );
+        };
+
+        const cols = Object.keys(cleaned[0] ?? {}).map((key) => ({
+          ...(key != 'url' && {
+            headerName: key,
+            field: key,
+            headerStyle: { color: 'white' },
+            ...(key == 'title' && { cellRenderer: LinkRenderer }),
+          }),
+        }));
+
+        setColumnDefs(cols);
+      });
+  }, []);
+
+  const handleScroll = (event: BodyScrollEvent) => {
+    if (event.direction !== 'vertical') return;
+
+    // event.top is the scrollTop of the grid's body
+    const scrollTop = event.top;
+
+    // Example trigger: show blur if scrolled more than 200px
+    isBlur(scrollTop > 1200);
+    console.log(scrollTop);
+  };
 
   return (
-    <div className="rounded-md border bg-background relative">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    style={{
-                      minWidth: header.column.columnDef.size,
-                      maxWidth: header.column.columnDef.size,
-                    }}
-                  >
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    style={{
-                      minWidth: cell.column.columnDef.size,
-                      maxWidth: cell.column.columnDef.size,
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
+    <>
+      <div
+        className="relative"
+        style={{
+          width: '100%',
+          maxHeight: visibleHeight,
+          overflow: 'hidden',
+        }}
+      >
+        {/* AG GRID */}
+        <div
+          id="grid"
+          style={{
+            height: '600px', // true height (grid scrolls internally)
+            width: '100%',
+          }}
+        >
+          <AgGridReact
+            ref={gridRef}
+            theme={themeMaterial.withPart(colorSchemeDarkWarm)}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            defaultColDef={{
+              flex: 1,
+              resizable: true,
+            }}
+            onGridReady={onGridReady}
+            onBodyScroll={handleScroll}
+          />
+          {blur && (
+            <>
+              <div
+                className="pointer-events-none absolute bottom-0 left-0 right-0"
+                style={{
+                  height: '100%', // blurred region height
+                  backdropFilter: 'blur(8px)',
+                  background: 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.9))',
+                }}
+              />
+
+              <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center pointer-events-auto">
+                <button
+                  className="bg-blue-600 text-white px-5 py-2 rounded-lg shadow-lg text-sm hover:bg-blue-700 transition"
+                  onClick={() => alert('Sign Up clicked!')}
+                >
+                  Sign Up to Unlock All Rows
+                </button>
+              </div>
+            </>
           )}
-        </TableBody>
-      </Table>
-      <div className="flex items-center justify-end space-x-2 px-6 py-4">
-        <Button
-          size={'sm'}
-          variant={'outline'}
-          className={'flex gap-2 text-sm rounded-sm border-border'}
-          onClick={() => goToPrevPage()}
-          disabled={!hasPrev}
-        >
-          Previous
-        </Button>
-        <Button
-          size={'sm'}
-          variant={'outline'}
-          className={'flex gap-2 text-sm rounded-sm border-border'}
-          onClick={() => goToNextPage((data[data.length - 1] as Transaction).id)}
-          disabled={!hasMore}
-        >
-          Next
-        </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
