@@ -21,6 +21,11 @@ import {
   ColDef,
 } from 'ag-grid-community';
 
+type LinkRendererProps = {
+  value: string;
+  data: { url?: string };
+};
+
 interface Job {
   title: string;
   category: string;
@@ -61,10 +66,10 @@ export default function DataTable() {
     fetch('../../super_combined.json')
       .then((res) => res.json())
       .then((data) => {
-        const cleaned = data.map(({ posted, start, ...rest }: any) => rest);
+        const cleaned = data.map(({ posted, start, ...rest }: Job) => rest);
         setRowData(cleaned);
 
-        const LinkRenderer = ({ value, data }: any) => {
+        const LinkRenderer = ({ value, data }: LinkRendererProps) => {
           // value = title text
           // data.url = the URL field
           if (!value || !data?.url) return value;
