@@ -30,21 +30,20 @@ interface Job {
   title: string;
   category: string;
   location: string;
-  posted: Number;
+  posted: number;
   url: string;
   postedStr: string;
   startStr: string;
-  start: Number;
+  start: number;
   description: string;
-  experience: any;
-  remote: Number;
+  experience: number | string;
+  remote: number;
 }
 
 export default function DataTable() {
   const [rowData, setRowData] = useState<Job[]>([]);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [blur, isBlur] = useState<boolean>(false);
-  const gridRef = useRef<any>(null);
 
   ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -124,7 +123,6 @@ export default function DataTable() {
           }}
         >
           <AgGridReact
-            ref={gridRef}
             theme={themeMaterial.withPart(colorSchemeDarkWarm)}
             rowData={rowData}
             columnDefs={columnDefs}
