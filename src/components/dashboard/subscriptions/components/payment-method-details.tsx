@@ -10,13 +10,18 @@ const PaymentMethodLabels: Record<PaddlePaymentMethodDetails['type'], string> = 
   paypal: 'PayPal',
   ideal: 'iDEAL',
   bancontact: 'Bancontact',
+  blik: 'BLIK',
+  kakao_pay: 'Kakao Pay',
   korea_local: 'Korean Local Payment',
+  south_korea_local_card: 'South Korea Local Card',
+  mb_way: 'MB WAY',
+  naver_pay: 'Naver Pay',
+  payco: 'Payco',
+  pix: 'Pix',
+  samsung_pay: 'Samsung Pay',
+  upi: 'UPI',
   offline: 'Offline',
   unknown: 'Unknown',
-  blik: 'BLIK',
-  mb_way: 'MB Way',
-  pix: 'Pix',
-  upi: 'UPI',
 };
 
 interface Props {
