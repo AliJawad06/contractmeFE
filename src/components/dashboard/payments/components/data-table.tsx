@@ -17,11 +17,27 @@ import {
   colorSchemeLightCold,
   colorSchemeLightWarm,
   BodyScrollEvent,
+  GridReadyEvent,
+  ColDef,
 } from 'ag-grid-community';
 
+interface Job {
+  title: string;
+  category: string;
+  location: string;
+  posted: Number;
+  url: string;
+  postedStr: string;
+  startStr: string;
+  start: Number;
+  description: string;
+  experience: any;
+  remote: Number;
+}
+
 export default function DataTable() {
-  const [rowData, setRowData] = useState<any[]>([]);
-  const [columnDefs, setColumnDefs] = useState<any[]>([]);
+  const [rowData, setRowData] = useState<Job[]>([]);
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [blur, isBlur] = useState<boolean>(false);
   const gridRef = useRef<any>(null);
 
@@ -30,9 +46,9 @@ export default function DataTable() {
   // 👇 How many rows to show before blur
   const VISIBLE_ROWS = 45;
   // TODO: use useRef()
-  let gridApi: any;
+  let gridApi: GridReadyEvent['api'];
 
-  const onGridReady = (params: any) => {
+  const onGridReady = (params: GridReadyEvent) => {
     gridApi = params.api;
   };
   // AG-Grid default row height = 25px
