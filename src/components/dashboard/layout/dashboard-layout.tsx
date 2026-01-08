@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ReactNode } from 'react';
 import { DashboardGradient } from '@/components/gradients/dashboard-gradient';
 import '../../../styles/dashboard.css';
@@ -17,8 +16,13 @@ export function DashboardLayout({ children }: Props) {
       <div className="hidden border-r md:block relative">
         <div className="flex h-full flex-col gap-2">
           <div className="flex items-center pt-8 pl-6 pb-10">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Image src={'/assets/icons/logo/aeroedit-logo-icon.svg'} alt={'AeroEdit'} width={41} height={41} />
+            <Link href="/" className="flex items-center gap-3 font-semibold">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-lg">C</span>
+              </div>
+              <span className="text-lg font-semibold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                Contractly
+              </span>
             </Link>
           </div>
           <div className="flex flex-col grow">

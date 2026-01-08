@@ -1,32 +1,33 @@
 import { DashboardPageHeader } from '@/components/dashboard/layout/dashboard-page-header';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Sparkles, ArrowRight } from 'lucide-react';
 
 export function NoSubscriptionView() {
   return (
     <>
       <DashboardPageHeader pageTitle={'Subscriptions'} />
-      <div className={'grid grid-cols-12'}>
-        <Card
-          className={'bg-background/50 backdrop-blur-[24px] border-border p-6 col-span-12 md:col-span-6 lg:col-span-4'}
-        >
-          <CardHeader className="p-0 space-y-0">
-            <CardTitle className="flex justify-between items-center pb-2">
-              <span className={'text-xl font-medium'}>No active subscriptions</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className={'p-0'}>
-            <div className="text-base leading-6 text-secondary">
-              Sign up for a subscription to see your subscriptions here.
-            </div>
-          </CardContent>
-          <CardFooter className={'p-0 pt-6'}>
-            <Button asChild={true} size={'sm'} variant={'outline'} className={'text-sm rounded-sm border-border'}>
-              <Link href={'/'}>View all</Link>
-            </Button>
-          </CardFooter>
-        </Card>
+      <div className={'max-w-md'}>
+        <div className={'dashboard-card p-8 text-center'}>
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-600/20 flex items-center justify-center mx-auto mb-6">
+            <Sparkles size={28} className="text-purple-400" />
+          </div>
+          <h2 className={'section-header text-xl mb-3'}>No Active Subscriptions</h2>
+          <p className="text-muted-foreground mb-6">
+            Unlock unlimited job alerts, auto-applications, and recruiter access with Early Access.
+          </p>
+          <Button
+            asChild={true}
+            className={
+              'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white border-0 rounded-xl'
+            }
+          >
+            <Link href={'/'} className="flex items-center gap-2">
+              View Plans
+              <ArrowRight size={16} />
+            </Link>
+          </Button>
+        </div>
       </div>
     </>
   );

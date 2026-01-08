@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { SubscriptionHeaderActionButton } from '@/components/dashboard/subscriptions/components/subscription-header-action-button';
 import { SubscriptionAlerts } from '@/components/dashboard/subscriptions/components/subscription-alerts';
 import { MobileSidebar } from '@/components/dashboard/layout/mobile-sidebar';
+import { Calendar } from 'lucide-react';
 
 interface Props {
   subscription: Subscription;
@@ -27,23 +28,42 @@ export function SubscriptionHeader({ subscription }: Props) {
     <div className={'flex justify-between items-start sm:items-center flex-col sm:flex-row mb-6 sm:mb-0'}>
       <div className={'flex flex-col w-full'}>
         <SubscriptionAlerts subscription={subscription} />
-        <div className={'flex items-center gap-5'}>
+        <div className={'flex items-center gap-4'}>
           <MobileSidebar />
-          {subscriptionItem.product.imageUrl && (
-            <Image src={subscriptionItem.product.imageUrl} alt={subscriptionItem.product.name} width={48} height={48} />
+          {subscriptionItem.product.imageUrl ? (
+            <div className="p-2 rounded-xl bg-purple-500/10">
+              <Image
+                src={subscriptionItem.product.imageUrl}
+                alt={subscriptionItem.product.name}
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
+            </div>
+          ) : (
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+              <span className="text-white font-bold text-xl">C</span>
+            </div>
           )}
-          <span className={'text-4xl leading-9 font-medium'}>{subscriptionItem.product.name}</span>
+          <h1
+            className={
+              'text-2xl md:text-3xl font-semibold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent'
+            }
+          >
+            {subscriptionItem.product.name}
+          </h1>
         </div>
-        <div className={'flex items-center gap-6 py-8 pb-6 flex-wrap md:flex-wrap'}>
-          <div className={'flex gap-1 items-end'}>
-            <span className={'text-4xl leading-9 font-medium'}>{formattedPrice}</span>
-            <span className={'text-secondary text-sm leading-[14px] font-medium'}>{frequency}</span>
+        <div className={'flex items-center gap-4 py-6 flex-wrap'}>
+          <div className={'flex gap-2 items-baseline'}>
+            <span className={'text-3xl font-semibold text-purple-400'}>{formattedPrice}</span>
+            <span className={'text-muted-foreground text-sm'}>{frequency}</span>
           </div>
-          <div>
-            <Status status={subscription.status} />
-          </div>
+          <Status status={subscription.status} />
         </div>
-        <div className={'text-secondary text-base leading-5 pb-8'}>Started on: {formattedStartedDate}</div>
+        <div className={'flex items-center gap-2 text-muted-foreground text-sm pb-6'}>
+          <Calendar size={14} />
+          <span>Started on {formattedStartedDate}</span>
+        </div>
       </div>
       <div>
         {!(subscription.scheduledChange || subscription.status === 'canceled') && (

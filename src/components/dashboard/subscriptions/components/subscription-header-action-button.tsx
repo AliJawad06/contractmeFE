@@ -60,7 +60,9 @@ export function SubscriptionHeaderActionButton({ subscriptionId }: Props) {
         onClick={() => setModalOpen(true)}
         size={'sm'}
         variant={'outline'}
-        className={'flex gap-2 text-sm rounded-sm border-border'}
+        className={
+          'text-sm rounded-xl border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 transition-all'
+        }
       >
         Cancel subscription
       </Button>

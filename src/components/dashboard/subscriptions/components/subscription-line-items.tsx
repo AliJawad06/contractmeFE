@@ -1,8 +1,8 @@
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Subscription } from '@paddle/paddle-node-sdk';
 import { Fragment } from 'react';
 import { parseMoney } from '@/utils/paddle/parse-money';
 import Image from 'next/image';
+import { Package } from 'lucide-react';
 
 interface Props {
   subscription?: Subscription;
@@ -10,75 +10,87 @@ interface Props {
 
 export function SubscriptionLineItems({ subscription }: Props) {
   return (
-    <Card className={'bg-background/50 backdrop-blur-[24px] border-border p-6'}>
-      <CardTitle className="flex justify-between items-center pb-6 border-border border-b">
-        <span className={'text-xl font-medium'}>Recurring products in this subscription</span>
-      </CardTitle>
-      <CardContent className={'p-0 pt-10'}>
-        <div className={'grid grid-cols-12'}>
-          <div className={'col-span-6'}></div>
-          <div className={'flex gap-6 w-full col-span-6'}>
-            <div className={'col-span-2 w-full text-base leading-4 font-semibold'}>Qty</div>
-            <div className={'col-span-2 w-full text-base leading-4 font-semibold'}>Tax</div>
-            <div className={'col-span-2 w-full text-base leading-4 font-semibold text-right'}>
-              <span>Amount</span>
-              <span className={'text-secondary text-sm leading-[14px] font-normal'}>(exc. tax)</span>
-            </div>
-          </div>
+    <div className={'dashboard-card p-6'}>
+      <div className="flex items-center gap-3 pb-6 border-b border-white/10">
+        <div className="p-2 rounded-lg bg-purple-500/10">
+          <Package size={18} className="text-purple-400" />
+        </div>
+        <h3 className={'section-header text-lg'}>Subscription Items</h3>
+      </div>
+      <div className={'pt-6'}>
+        {/* Header */}
+        <div className={'hidden md:grid grid-cols-12 gap-4 pb-4 border-b border-white/5'}>
+          <div className={'col-span-6 text-sm font-medium text-muted-foreground'}>Product</div>
+          <div className={'col-span-2 text-sm font-medium text-muted-foreground text-center'}>Qty</div>
+          <div className={'col-span-2 text-sm font-medium text-muted-foreground text-center'}>Tax</div>
+          <div className={'col-span-2 text-sm font-medium text-muted-foreground text-right'}>Amount</div>
+        </div>
 
-          {subscription?.recurringTransactionDetails?.lineItems.map((lineItem) => {
-            return (
-              <Fragment key={lineItem.priceId}>
-                <div className={'col-span-6 border-border border-b py-6'}>
+        {subscription?.recurringTransactionDetails?.lineItems.map((lineItem) => {
+          return (
+            <Fragment key={lineItem.priceId}>
+              <div className={'grid grid-cols-1 md:grid-cols-12 gap-4 py-6 border-b border-white/5 items-center'}>
+                <div className={'col-span-6'}>
                   <div className={'flex gap-4 items-center'}>
-                    <div>
-                      {lineItem.product.imageUrl && (
-                        <Image src={lineItem.product.imageUrl} width={48} height={48} alt={lineItem.product.name} />
-                      )}
-                    </div>
-                    <div className={'flex flex-col gap-3 px-4'}>
-                      <div className={'text-base leading-6 font-semibold'}>{lineItem.product.name}</div>
-                      <div className={'text-base leading-6 text-secondary'}>{lineItem.product.description}</div>
+                    {lineItem.product.imageUrl ? (
+                      <div className="p-2 rounded-xl bg-purple-500/10">
+                        <Image
+                          src={lineItem.product.imageUrl}
+                          width={40}
+                          height={40}
+                          alt={lineItem.product.name}
+                          className="rounded-lg"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                        <span className="text-white font-bold">C</span>
+                      </div>
+                    )}
+                    <div className={'flex flex-col gap-1'}>
+                      <div className={'text-sm font-semibold text-white'}>{lineItem.product.name}</div>
+                      <div className={'text-xs text-muted-foreground'}>{lineItem.product.description}</div>
                     </div>
                   </div>
                 </div>
-                <div className={'flex gap-6 w-full col-span-6 items-center border-border border-b py-6'}>
-                  <div className={'col-span-2 w-full text-base leading-4 font-semibold text-secondary'}>
-                    {lineItem.quantity}
-                  </div>
-                  <div className={'col-span-2 w-full text-base leading-4 font-semibold text-secondary'}>
-                    {parseFloat(lineItem.taxRate) * 100}%
-                  </div>
-                  <div className={'col-span-2 text-right w-full text-base leading-4 font-semibold text-secondary'}>
-                    {parseMoney(lineItem.totals.subtotal, subscription?.currencyCode)}
-                  </div>
+                <div className={'col-span-2 text-sm text-muted-foreground text-center'}>
+                  <span className="md:hidden text-xs">Qty: </span>
+                  {lineItem.quantity}
                 </div>
-              </Fragment>
-            );
-          })}
-          <div className={'col-span-6'}></div>
-          <div className={'flex flex-col w-full col-span-6 pt-6'}>
-            <div className={'flex justify-between py-4 pt-0 border-border border-b'}>
-              <div className={'col-span-3 w-full text-base leading-4 text-secondary'}>Amount</div>
-              <div className={'col-span-3 w-full text-base leading-4 text-right text-secondary'}>
-                {parseMoney(subscription?.recurringTransactionDetails?.totals.subtotal, subscription?.currencyCode)}
+                <div className={'col-span-2 text-sm text-muted-foreground text-center'}>
+                  <span className="md:hidden text-xs">Tax: </span>
+                  {parseFloat(lineItem.taxRate) * 100}%
+                </div>
+                <div className={'col-span-2 text-sm font-medium text-white text-right'}>
+                  {parseMoney(lineItem.totals.subtotal, subscription?.currencyCode)}
+                </div>
               </div>
-            </div>
-            <div className={'flex justify-between py-4 border-border border-b'}>
-              <div className={'col-span-3 w-full text-base leading-4 text-secondary'}>Tax</div>
-              <div className={'col-span-3 w-full text-base leading-4 text-right text-secondary'}>
-                {parseMoney(subscription?.recurringTransactionDetails?.totals.tax, subscription?.currencyCode)}
-              </div>
-            </div>
-            <div className={'flex justify-between py-4 border-border border-b'}>
-              <div className={'col-span-3 w-full text-base leading-4 text-secondary'}>Total (Inc. tax)</div>
-              <div className={'col-span-3 w-full text-base leading-4 font-semibold text-right'}>
-                {parseMoney(subscription?.recurringTransactionDetails?.totals.total, subscription?.currencyCode)}
-              </div>
-            </div>
+            </Fragment>
+          );
+        })}
+
+        {/* Totals */}
+        <div className={'flex flex-col gap-3 pt-6 max-w-xs ml-auto'}>
+          <div className={'flex justify-between py-2'}>
+            <span className={'text-sm text-muted-foreground'}>Subtotal</span>
+            <span className={'text-sm text-muted-foreground'}>
+              {parseMoney(subscription?.recurringTransactionDetails?.totals.subtotal, subscription?.currencyCode)}
+            </span>
+          </div>
+          <div className={'flex justify-between py-2'}>
+            <span className={'text-sm text-muted-foreground'}>Tax</span>
+            <span className={'text-sm text-muted-foreground'}>
+              {parseMoney(subscription?.recurringTransactionDetails?.totals.tax, subscription?.currencyCode)}
+            </span>
+          </div>
+          <div className={'flex justify-between py-3 border-t border-white/10'}>
+            <span className={'text-sm font-medium text-white'}>Total</span>
+            <span className={'text-lg font-semibold text-purple-400'}>
+              {parseMoney(subscription?.recurringTransactionDetails?.totals.total, subscription?.currencyCode)}
+            </span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

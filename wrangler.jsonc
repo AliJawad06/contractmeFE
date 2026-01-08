@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "my-worker",
+  "main": "src/index.js",
+  "compatibility_date": "2022-07-12",
+  "workers_dev": false,
+  "d1_databases": [
+    {
+      "binding": "contractme_db",
+      "database_name": "contractme_db",
+      "database_id": "5d86cc53-d086-4900-864d-949e276748cf",
+    },
+  ],
+}

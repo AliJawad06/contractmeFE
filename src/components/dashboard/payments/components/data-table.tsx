@@ -30,11 +30,11 @@ interface Job {
   title: string;
   category: string;
   location: string;
-  posted: number;
+  posted?: number;
   url: string;
   postedStr: string;
   startStr: string;
-  start: number;
+  start?: number;
   description: string;
   experience: number | string;
   remote: number;
@@ -61,16 +61,13 @@ export default function DataTable() {
   const visibleHeight = headerHeight + VISIBLE_ROWS * rowHeight;
 
   useEffect(() => {
-    // Example: fetch from a local JSON file or API
-    fetch('../../super_combined.json')
+    fetch('/api/jobs')
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: Job[]) => {
         const cleaned = data.map(({ posted, start, ...rest }: Job) => rest);
         setRowData(cleaned);
 
         const LinkRenderer = ({ value, data }: LinkRendererProps) => {
-          // value = title text
-          // data.url = the URL field
           if (!value || !data?.url) return value;
 
           return (
@@ -81,11 +78,10 @@ export default function DataTable() {
         };
 
         const cols = Object.keys(cleaned[0] ?? {}).map((key) => ({
-          ...(key != 'url' && {
+          ...(key !== 'url' && {
             headerName: key,
             field: key,
-            headerStyle: { color: 'white' },
-            ...(key == 'title' && { cellRenderer: LinkRenderer }),
+            ...(key === 'title' && { cellRenderer: LinkRenderer }),
           }),
         }));
 

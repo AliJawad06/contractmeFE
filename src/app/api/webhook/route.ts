@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server';
 import { ProcessWebhook } from '@/utils/paddle/process-webhook';
 import { getPaddleInstance } from '@/utils/paddle/get-paddle-instance';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 const webhookProcessor = new ProcessWebhook();
 

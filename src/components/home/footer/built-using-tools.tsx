@@ -1,15 +1,22 @@
-import Image from 'next/image';
-
 export function BuiltUsingTools() {
   return (
     <div className={'mx-auto max-w-7xl text-center px-8 mt-24 mb-24'}>
-      <span className={'text-base'}>Built with</span>
-      <div className={'flex flex-row flex-wrap gap-6 justify-center md:justify-between items-center mt-8 md:gap-1'}>
-        <Image src={'/assets/icons/logo/paddle-logo.svg'} alt={'TailwindCSS logo'} width={120} height={32} />
-        <Image src={'/assets/icons/logo/tailwind-logo.svg'} alt={'TailwindCSS logo'} width={194} height={24} />
-        <Image src={'/assets/icons/logo/supabase-logo.svg'} alt={'Supabase logo'} width={150} height={32} />
-        <Image src={'/assets/icons/logo/nextjs-logo.svg'} alt={'Next.js logo'} width={120} height={24} />
-        <Image src={'/assets/icons/logo/shadcn-logo.svg'} alt={'Shadcn logo'} width={137} height={32} />
+      <div className={'container-3d p-8 max-w-2xl mx-auto'}>
+        <h3 className={'text-xl font-semibold mb-4'}>Why Contractly?</h3>
+        <div className={'grid grid-cols-1 md:grid-cols-3 gap-6 text-left'}>
+          <div>
+            <div className={'text-2xl font-bold text-purple-400'}>100+</div>
+            <div className={'text-sm text-muted-foreground'}>Job sites searched daily</div>
+          </div>
+          <div>
+            <div className={'text-2xl font-bold text-purple-400'}>1000s</div>
+            <div className={'text-sm text-muted-foreground'}>New contracts found weekly</div>
+          </div>
+          <div>
+            <div className={'text-2xl font-bold text-purple-400'}>24/7</div>
+            <div className={'text-sm text-muted-foreground'}>Automated job monitoring</div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -8,10 +8,10 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://paddle-billing.vercel.app'),
-  title: 'AeroEdit',
+  metadataBase: new URL('https://contractly.io'),
+  title: 'Contractly - Find Your Next Contract Job',
   description:
-    'AeroEdit is a powerful team design collaboration app and image editor. With plans for businesses of all sizes, streamline your workflow with real-time collaboration, advanced editing tools, and seamless project management.',
+    'Contractly is your one stop shop to find your next contract jobs. We search through hundreds of sites for you. Features include unlimited alerts, automated applications, and access to recruiter information.',
 };
 
 export default function RootLayout({

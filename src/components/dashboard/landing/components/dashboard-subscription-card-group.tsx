@@ -1,23 +1,31 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { SubscriptionCards } from '@/components/dashboard/subscriptions/components/subscription-cards';
 import { getSubscriptions } from '@/utils/paddle/get-subscriptions';
 import { ErrorContent } from '@/components/dashboard/layout/error-content';
+import { ArrowRight } from 'lucide-react';
 
 export async function DashboardSubscriptionCardGroup() {
   const subscriptions = await getSubscriptions();
   return (
-    <Card className={'bg-background/50 backdrop-blur-[24px] border-border p-6'}>
-      <CardHeader className="p-0 space-y-0">
-        <CardTitle className="flex justify-between items-center pb-6 border-border border-b">
-          <span className={'text-xl font-medium'}>Active subscriptions</span>
-          <Button asChild={true} size={'sm'} variant={'outline'} className={'text-sm rounded-sm border-border'}>
-            <Link href={'/dashboard/subscriptions'}>View all</Link>
-          </Button>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className={'p-0 pt-6 @container'}>
+    <div className={'dashboard-card p-8'}>
+      <div className="flex justify-between items-center pb-6 mb-6 border-b border-white/10">
+        <h2 className={'section-header'}>Active Subscriptions</h2>
+        <Button
+          asChild={true}
+          size={'sm'}
+          variant={'outline'}
+          className={
+            'text-sm rounded-xl border-purple-500/30 hover:bg-purple-500/10 hover:border-purple-500/50 transition-all'
+          }
+        >
+          <Link href={'/dashboard/subscriptions'} className="flex items-center gap-2">
+            View all
+            <ArrowRight size={14} />
+          </Link>
+        </Button>
+      </div>
+      <div className={'@container'}>
         {subscriptions?.data ? (
           <SubscriptionCards
             className={'grid-cols-1 gap-6 @[600px]:grid-cols-2'}
@@ -26,7 +34,7 @@ export async function DashboardSubscriptionCardGroup() {
         ) : (
           <ErrorContent />
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

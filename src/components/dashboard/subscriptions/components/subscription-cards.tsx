@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Status } from '@/components/shared/status/status';
@@ -14,7 +13,14 @@ interface Props {
 
 export function SubscriptionCards({ subscriptions, className }: Props) {
   if (subscriptions.length === 0) {
-    return <span className={'text-base font-medium'}>No active subscriptions</span>;
+    return (
+      <div className="text-center py-8">
+        <div className="text-muted-foreground">No active subscriptions</div>
+        <Link href="/" className="text-purple-400 hover:text-purple-300 text-sm mt-2 inline-block">
+          View available plans
+        </Link>
+      </div>
+    );
   } else {
     return (
       <div className={cn('grid flex-1 items-start', className)}>
@@ -27,41 +33,53 @@ export function SubscriptionCards({ subscriptions, className }: Props) {
               ? `/${subscription.billingCycle.interval}`
               : `every ${subscription.billingCycle.frequency} ${subscription.billingCycle.interval}s`;
           return (
-            <Card key={subscription.id} className={'bg-background/50 backdrop-blur-[24px] border-border p-6'}>
-              <CardHeader className="p-0 space-y-0">
-                <CardTitle className="flex flex-col justify-between items-start mb-6">
-                  <div
-                    className={cn('flex mb-4 w-full', {
-                      'justify-between': subscriptionItem.product.imageUrl,
-                      'justify-end': !subscriptionItem.product.imageUrl,
-                    })}
-                  >
-                    {subscriptionItem.product.imageUrl && (
+            <div
+              key={subscription.id}
+              className="group relative p-6 rounded-xl bg-white/5 border border-white/10 hover:bg-purple-500/5 hover:border-purple-500/20 transition-all duration-300"
+            >
+              <div className="flex flex-col">
+                <div
+                  className={cn('flex mb-4 w-full items-start', {
+                    'justify-between': subscriptionItem.product.imageUrl,
+                    'justify-end': !subscriptionItem.product.imageUrl,
+                  })}
+                >
+                  {subscriptionItem.product.imageUrl ? (
+                    <div className="p-2 rounded-xl bg-purple-500/10">
                       <Image
                         src={subscriptionItem.product.imageUrl}
                         alt={subscriptionItem.product.name}
-                        width={48}
-                        height={48}
+                        width={40}
+                        height={40}
+                        className="rounded-lg"
                       />
-                    )}
-                    <Link href={`/dashboard/subscriptions/${subscription.id}`}>
-                      <ArrowRight size={20} />
-                    </Link>
-                  </div>
-                  <span className={'text-xl leading-7 font-medium'}>{subscriptionItem.product.name}</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className={'p-0 flex justify-between gap-3 flex-wrap xl:flex-nowrap'}>
-                <div className={'flex flex-col gap-3'}>
-                  <div className="text-base leading-6 text-secondary">{subscriptionItem.product.description}</div>
-                  <div className="text-base leading-[16px] text-primary">
-                    {formattedPrice}
-                    {frequency}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">C</span>
+                    </div>
+                  )}
+                  <Link
+                    href={`/dashboard/subscriptions/${subscription.id}`}
+                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  >
+                    <ArrowRight
+                      size={18}
+                      className="text-muted-foreground group-hover:text-purple-400 transition-colors"
+                    />
+                  </Link>
                 </div>
-                <Status status={subscription.status} />
-              </CardContent>
-            </Card>
+                <h3 className="text-lg font-semibold text-white mb-2">{subscriptionItem.product.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{subscriptionItem.product.description}</p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                  <div className="text-lg font-semibold text-purple-400">
+                    {formattedPrice}
+                    <span className="text-sm font-normal text-muted-foreground">{frequency}</span>
+                  </div>
+                  <Status status={subscription.status} />
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>

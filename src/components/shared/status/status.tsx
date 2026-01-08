@@ -6,28 +6,47 @@ interface Props {
 }
 
 interface StatusInfo {
-  [key: string]: { color: string; icon: ReactNode; text: string };
+  [key: string]: { bgColor: string; textColor: string; icon: ReactNode; text: string };
 }
-// Ensure that any new colors are added to `safelist` in tailwind.config.js
+
 const StatusInfo: StatusInfo = {
-  active: { color: '#25F497', icon: <Check size={16} />, text: 'Active' },
-  paid: { color: '#25F497', icon: <Check size={16} />, text: 'Paid' },
-  completed: { color: '#25F497', icon: <Check size={16} />, text: 'Completed' },
-  trialing: { color: '#E0E0EB', icon: <Clock4 size={16} />, text: 'Trialing' },
-  draft: { color: '#797C7C', icon: <SquarePen size={16} />, text: 'Draft' },
-  ready: { color: '#797C7C', icon: <SquarePen size={16} />, text: 'Ready' },
-  canceled: { color: '#797C7C', icon: <CircleMinus size={16} />, text: 'Canceled' },
-  inactive: { color: '#F42566', icon: <CircleMinus size={16} />, text: 'Inactive' },
-  past_due: { color: '#F42566', icon: <Clock4 size={16} />, text: 'Past due' },
-  paused: { color: '#F79636', icon: <Pause size={16} />, text: 'Paused' },
-  billed: { color: '#F79636', icon: <Clock4 size={16} />, text: 'Unpaid invoice' },
+  active: { bgColor: 'bg-emerald-500/10', textColor: 'text-emerald-400', icon: <Check size={14} />, text: 'Active' },
+  paid: { bgColor: 'bg-emerald-500/10', textColor: 'text-emerald-400', icon: <Check size={14} />, text: 'Paid' },
+  completed: {
+    bgColor: 'bg-emerald-500/10',
+    textColor: 'text-emerald-400',
+    icon: <Check size={14} />,
+    text: 'Completed',
+  },
+  trialing: { bgColor: 'bg-purple-500/10', textColor: 'text-purple-400', icon: <Clock4 size={14} />, text: 'Trialing' },
+  draft: { bgColor: 'bg-white/5', textColor: 'text-muted-foreground', icon: <SquarePen size={14} />, text: 'Draft' },
+  ready: { bgColor: 'bg-white/5', textColor: 'text-muted-foreground', icon: <SquarePen size={14} />, text: 'Ready' },
+  canceled: {
+    bgColor: 'bg-white/5',
+    textColor: 'text-muted-foreground',
+    icon: <CircleMinus size={14} />,
+    text: 'Canceled',
+  },
+  inactive: { bgColor: 'bg-red-500/10', textColor: 'text-red-400', icon: <CircleMinus size={14} />, text: 'Inactive' },
+  past_due: { bgColor: 'bg-red-500/10', textColor: 'text-red-400', icon: <Clock4 size={14} />, text: 'Past due' },
+  paused: { bgColor: 'bg-amber-500/10', textColor: 'text-amber-400', icon: <Pause size={14} />, text: 'Paused' },
+  billed: {
+    bgColor: 'bg-amber-500/10',
+    textColor: 'text-amber-400',
+    icon: <Clock4 size={14} />,
+    text: 'Unpaid invoice',
+  },
 };
 
 export function Status({ status }: Props) {
-  const { color, icon, text } = StatusInfo[status] ?? { text: status };
+  const { bgColor, textColor, icon, text } = StatusInfo[status] ?? {
+    bgColor: 'bg-white/5',
+    textColor: 'text-muted-foreground',
+    text: status,
+  };
   return (
     <div
-      className={`self-end flex items-center gap-2 border rounded-xxs border-border py-1 px-2 text-[${color}] w-fit @4xs:text-nowrap text-wrap`}
+      className={`inline-flex items-center gap-1.5 ${bgColor} ${textColor} rounded-full py-1 px-3 text-xs font-medium whitespace-nowrap`}
     >
       {icon}
       {text}

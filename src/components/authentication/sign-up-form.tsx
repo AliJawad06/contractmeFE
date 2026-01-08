@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { AuthenticationForm } from '@/components/authentication/authentication-form';
@@ -71,8 +70,12 @@ export function SignupForm() {
 
   return (
     <form action="#" className="px-6 md:px-16 pb-6 py-8 gap-6 flex flex-col items-center justify-center">
-      <Image src="/assets/icons/logo/aeroedit-icon.svg" alt="AeroEdit" width={80} height={80} />
-      <div className="text-[30px] leading-[36px] font-medium tracking-[-0.6px] text-center">Create an account</div>
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+        <span className="text-white font-bold text-2xl">C</span>
+      </div>
+      <div className="text-[30px] leading-[36px] font-medium tracking-[-0.6px] text-center">
+        Create your Contractly account
+      </div>
 
       {/* ✅ Industry Dropdown */}
       <IndustryDropdown selected={selectedIndustries} onToggle={(val) => toggleSelection(val, setSelectedIndustries)} />

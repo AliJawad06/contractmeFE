@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import { ArrowUpRight } from 'lucide-react';
 
 export function PoweredByPaddle() {
   return (
@@ -9,33 +7,30 @@ export function PoweredByPaddle() {
       <Separator className={'footer-border'} />
       <div
         className={
-          'flex flex-col justify-center items-center gap-2 text-muted-foreground text-sm leading-[14px] py-[24px]'
+          'flex flex-col justify-center items-center gap-4 text-muted-foreground text-sm leading-[14px] py-[32px]'
         }
       >
         <div className={'flex justify-center items-center gap-2'}>
-          <span className={'text-sm leading-[14px]'}>A Next.js template by</span>
-          <Image src={'/assets/icons/logo/paddle-white-logo.svg'} alt={'Paddle logo'} width={54} height={14} />
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+            <span className="text-white font-bold text-xs">C</span>
+          </div>
+          <span className={'text-sm font-medium'}>Contractly</span>
         </div>
-        <div className={'flex justify-center items-center gap-2 flex-wrap md:flex-nowrap'}>
-          <Link className={'text-sm leading-[14px]'} href={'https://paddle.com'} target={'_blank'}>
-            <span className={'flex items-center gap-1'}>
-              Explore Paddle
-              <ArrowUpRight className={'h-4 w-4'} />
-            </span>
+        <div className={'flex justify-center items-center gap-6 flex-wrap md:flex-nowrap'}>
+          <Link className={'text-sm leading-[14px] hover:text-white transition-colors'} href={'/privacy'}>
+            Privacy Policy
           </Link>
-          <Link className={'text-sm leading-[14px]'} href={'https://www.paddle.com/legal/terms'} target={'_blank'}>
-            <span className={'flex items-center gap-1'}>
-              Terms of use
-              <ArrowUpRight className={'h-4 w-4'} />
-            </span>
+          <Link className={'text-sm leading-[14px] hover:text-white transition-colors'} href={'/terms'}>
+            Terms of Service
           </Link>
-          <Link className={'text-sm leading-[14px]'} href={'https://www.paddle.com/legal/privacy'} target={'_blank'}>
-            <span className={'flex items-center gap-1'}>
-              Privacy
-              <ArrowUpRight className={'h-4 w-4'} />
-            </span>
+          <Link
+            className={'text-sm leading-[14px] hover:text-white transition-colors'}
+            href={'mailto:support@contractly.io'}
+          >
+            Contact
           </Link>
         </div>
+        <div className={'text-xs text-muted-foreground/60 mt-2'}>© 2025 Contractly. All rights reserved.</div>
       </div>
     </>
   );

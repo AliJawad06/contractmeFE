@@ -12,15 +12,22 @@ interface Props {
 
 export function PriceAmount({ loading, priceMap, priceSuffix, tier, value }: Props) {
   return (
-    <div className="mt-6 flex flex-col px-8">
+    <div className="mt-4 flex items-baseline gap-2">
       {loading ? (
-        <Skeleton className="h-[96px] w-full bg-border" />
+        <Skeleton className="h-20 w-full bg-white/5 rounded-xl" />
       ) : (
         <>
-          <div className={cn('text-[80px] leading-[96px] tracking-[-1.6px] font-medium')}>
+          <div
+            className={cn(
+              'text-6xl font-bold tracking-tight',
+              tier.featured
+                ? 'bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent'
+                : 'text-white',
+            )}
+          >
             {priceMap[tier.priceId[value]].replace(/\.00$/, '')}
           </div>
-          <div className={cn('font-medium leading-[12px] text-[12px]')}>{priceSuffix}</div>
+          <div className="text-sm font-medium text-muted-foreground pb-2">{priceSuffix}</div>
         </>
       )}
     </div>

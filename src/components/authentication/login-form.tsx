@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { login, loginAnonymously } from '@/app/login/actions';
 import { useState } from 'react';
@@ -31,10 +30,10 @@ export function LoginForm() {
 
   return (
     <form action={'#'} className={'px-6 md:px-16 pb-6 py-8 gap-6 flex flex-col items-center justify-center'}>
-      <Image src={'/assets/icons/logo/aeroedit-icon.svg'} alt={'AeroEdit'} width={80} height={80} />
-      <div className={'text-[30px] leading-[36px] font-medium tracking-[-0.6px] text-center'}>
-        Log in to your account
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+        <span className="text-white font-bold text-2xl">C</span>
       </div>
+      <div className={'text-[30px] leading-[36px] font-medium tracking-[-0.6px] text-center'}>Log in to Contractly</div>
       <Button onClick={() => handleAnonymousLogin()} type={'button'} variant={'secondary'} className={'w-full mt-6'}>
         Log in as Guest
       </Button>

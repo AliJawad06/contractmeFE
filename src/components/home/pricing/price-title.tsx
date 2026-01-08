@@ -1,30 +1,34 @@
 import { Tier } from '@/constants/pricing-tier';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Sparkles, Crown } from 'lucide-react';
 
 interface Props {
   tier: Tier;
 }
 
 export function PriceTitle({ tier }: Props) {
-  const { name, featured, icon } = tier;
+  const { name, featured } = tier;
   return (
-    <div
-      className={cn('flex justify-between items-center px-8 pt-8', {
-        'featured-price-title': featured,
-      })}
-    >
-      <div className={'flex items-center gap-[10px]'}>
-        <Image src={icon} height={40} width={40} alt={name} />
-        <p className={'text-[20px] leading-[30px] font-semibold'}>{name}</p>
+    <div className="flex justify-between items-start mb-2">
+      <div className="flex items-center gap-3">
+        <div
+          className={cn(
+            'p-2.5 rounded-xl',
+            featured ? 'bg-gradient-to-br from-purple-500/20 to-indigo-600/20' : 'bg-white/5',
+          )}
+        >
+          {featured ? (
+            <Crown size={24} className="text-purple-400" />
+          ) : (
+            <Sparkles size={24} className="text-muted-foreground" />
+          )}
+        </div>
+        <h3 className="text-2xl font-semibold text-white">{name}</h3>
       </div>
       {featured && (
-        <div
-          className={
-            'flex items-center px-3 py-1 rounded-xs border border-secondary-foreground/10 text-[14px] h-[29px] leading-[21px] featured-card-badge'
-          }
-        >
-          Most popular
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30">
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+          <span className="text-xs font-medium text-purple-300">Most Popular</span>
         </div>
       )}
     </div>
