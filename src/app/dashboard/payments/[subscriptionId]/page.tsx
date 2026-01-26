@@ -13,7 +13,7 @@ export default function SubscriptionsPaymentPage() {
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-8">
       <DashboardPageHeader pageTitle={'Payments'} />
       <Suspense fallback={<LoadingScreen />}>
-        <PaymentsContent subscriptionId={subscriptionId} />
+        <PaymentsContent />
       </Suspense>
     </main>
   );

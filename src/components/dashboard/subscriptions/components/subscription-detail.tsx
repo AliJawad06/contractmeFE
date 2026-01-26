@@ -30,10 +30,12 @@ export function SubscriptionDetail({ subscriptionId }: Props) {
 
       if (subscriptionResponse) {
         setSubscription(subscriptionResponse);
+        console.log(subscription);
       }
 
       if (transactionsResponse) {
         setTransactions(transactionsResponse);
+        console.log(transactions);
       }
       setLoading(false);
     })();

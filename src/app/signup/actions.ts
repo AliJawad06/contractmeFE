@@ -26,6 +26,8 @@ export async function signup(data: FormData) {
   }
 
   const user = signUpData.user;
+  console.log('Auth user ID:', user.id);
+  console.log('Full user object:', JSON.stringify(user, null, 2));
 
   // 2️⃣ Store additional user metadata in the profiles table
   const { error: profileError } = await supabase.from('profiles').upsert(

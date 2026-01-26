@@ -45,7 +45,10 @@ export function DashboardSubscriptionCardGroup() {
 
   React.useEffect(() => {
     async function fetchProfile() {
-      const { profile } = await getUser(); // <- your async call
+      const user = await getUser();
+      const error = user.error;
+      const profile = user.profile;
+      console.log(user);
       setProfile(profile);
 
       setLocations(profile.locations);

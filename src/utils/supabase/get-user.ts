@@ -18,15 +18,17 @@ export async function getUser() {
   if (userError || !user) {
     return { user: null, profile: null, error: userError || 'No user found' };
   }
-
   // ✅ 2. Fetch the user's profile from the `profiles` table
-  const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', user.id).single();
 
+  const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', user.id).single();
   if (profileError) {
     // You can return null profile if it doesn’t exist yet
     return { user, profile: null, error: profileError.message };
   }
 
   // ✅ 3. Return combined user + profile
+  if (user) {
+    console.log(profile);
+  }
   return { user, profile, error: null };
 }
